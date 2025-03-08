@@ -1,0 +1,43 @@
+{% extends "import.html" %} 
+{% block content %}
+
+<style>
+    body {
+        background-image: url('D:\Flask Application\templates\bg.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    .content-wrapper {
+        background-color: rgba(255, 255, 255, 0.8); /* Optional: To add a white background with some transparency */
+        padding: 20px;
+        border-radius: 10px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <center>
+        <br><h2>PNEUMONIA DETECTION Using Deep Learning</h2><br>
+
+        <form id="upload-file" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" class="btn btn-success" id="imageUpload" accept=".png, .jpg, .jpeg">
+        </form>
+
+        <div class="image-section" style="display:none;">
+            <img id="imagePreview"  class="img-responsive" src="#" style="width:300px;height:300px;"/><br><br>
+            <div>
+                <button type="button" class="btn btn-info btn-lg" id="btn-predict">Predict!</button>
+            </div>
+        </div>
+
+        <div class="loader" style="display:none;"></div>
+
+        <h3 id="result">
+            <span> </span>
+        </h3>
+    </center>
+    <br><br>
+</div>
+
+{% endblock %}
