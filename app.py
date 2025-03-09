@@ -5,7 +5,6 @@ from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
 import tensorflow as tf
 from skimage import filters, morphology
-import logging
 
 # Set up Flask app
 UPLOAD_FOLDER = 'uploads'
@@ -14,21 +13,23 @@ app = Flask(__name__)
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
+# Log the current working directory to check where the app is running from
+print(f"Current working directory: {os.getcwd()}")
 
 # Load TFLite model
 MODEL_PATH = "model.tflite"
+print(f"Checking model file at: {MODEL_PATH}")  # Log model path
+
 if os.path.exists(MODEL_PATH):
-    logging.info(f"✅ Model found at {MODEL_PATH}")
+    print("✅ Model found.")
     interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
     interpreter.allocate_tensors()
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
-    logging.info('✅ Model loaded successfully!')
+    print('✅ Model loaded successfully!')
 else:
-    logging.error(f"⚠️ Model not found at {MODEL_PATH}")
     interpreter = None
+    print('⚠️ Model not found! Ensure "model.tflite" is in the directory.')
 
 def get_className(classNo):
     return "Normal" if classNo == 0 else "Pneumonia"
@@ -56,9 +57,6 @@ def get_result(file_path):
         input_img = np.expand_dims(cv2.cvtColor(resized_img, cv2.COLOR_GRAY2RGB), axis=0)
         input_img = np.array(input_img, dtype=np.float32)  # Ensure correct format
 
-        # Log image shape
-        logging.debug(f"Input image shape: {input_img.shape}")
-
         # Run inference
         interpreter.set_tensor(input_details[0]['index'], input_img)
         interpreter.invoke()
@@ -73,7 +71,6 @@ def get_result(file_path):
         return (f"{class_name} detected. Pneumonia affects {pneumonia_percentage:.2f}% of the lung."
                 if pneumonia_percentage is not None else f"{class_name} detected.")
     except Exception as e:
-        logging.error(f"Error occurred: {str(e)}")
         return f"An error occurred: {str(e)}"
     finally:
         if os.path.exists(file_path):
