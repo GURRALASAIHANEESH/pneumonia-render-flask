@@ -5,6 +5,7 @@ from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
 import tensorflow as tf
 from skimage import filters, morphology
+from tensorflow.keras.models import load_model
 
 # Set up Flask app
 UPLOAD_FOLDER = 'uploads'
@@ -15,6 +16,21 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Log the current working directory to check where the app is running from
 print(f"Current working directory: {os.getcwd()}")
+
+# Convert Keras model to TFLite format
+def convert_model_to_tflite():
+    # Load your existing model
+    model = load_model("vgg_unfrozen.h5")
+
+    # Convert model to TFLite for smaller size
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    tflite_model = converter.convert()
+
+    # Save new lightweight model
+    with open("model.tflite", "wb") as f:
+        f.write(tflite_model)
+
+    print("✅ Model successfully converted to TFLite format!")
 
 # Load TFLite model
 MODEL_PATH = "model.tflite"
@@ -90,5 +106,10 @@ def upload():
     return 'File type not allowed'
 
 if __name__ == '__main__':
+    # Convert the model to TFLite format if not already done
+    if not os.path.exists(MODEL_PATH):
+        convert_model_to_tflite()
+
+    # Start the Flask app
     port = int(os.environ.get('PORT', 5000))  # Ensure correct port binding
     app.run(debug=True, host='0.0.0.0', port=port)
