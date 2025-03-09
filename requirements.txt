@@ -1,14 +1,13 @@
-Flask==2.1.1
-gunicorn==21.2.0
-tensorflow==2.17.0
-keras==3.9.0
-numpy>=1.23.5
- # Updated version to match TensorFlow's requirements
+Flask==3.0.3
+gunicorn==21.2.0  # Required for Render deployment
+tensorflow-cpu==2.17.0  # Use the CPU-only version of TensorFlow
+keras==3.4.1
+numpy==1.26.4
 opencv-python==4.10.0.84
-scipy==1.10.0
+scipy==1.14.1
 h5py==3.11.0
 Pillow==10.4.0
 scikit-image==0.24.0
-Werkzeug==2.1.1
+Werkzeug==3.0.3
 requests==2.31.0
 urllib3==2.2.1
