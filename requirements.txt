@@ -1,20 +1,20 @@
+# Deployment dependencies
 gunicorn==21.2.0  # Required for Render deployment
-tensorflow-cpu==2.17.0  # Use the CPU-only version of TensorFlow
-keras==3.4.1
+
+# Machine Learning & Image Processing
+tensorflow-cpu==2.17.0  # Use CPU-only version of TensorFlow
+keras
 numpy==1.26.4
-Flask  # This will install the latest compatible version
-gunicorn==21.2.0
-tensorflow==2.17.0
-keras==3.9.0
-numpy>=1.23.5
 opencv-python==4.10.0.84
 scipy==1.10.0
 h5py==3.11.0
 Pillow==10.4.0
 scikit-image==0.24.0
-Werkzeug==3.0.3
-Pillow==10.4.0
-scikit-image==0.24.0
-Werkzeug==2.1.1
+
+# Flask and Web Dependencies
+Flask  # Installs the latest compatible version
+Werkzeug==3.0.3  # Keeping latest version (removed 2.1.1)
+
+# HTTP Requests
 requests==2.31.0
 urllib3==2.2.1
