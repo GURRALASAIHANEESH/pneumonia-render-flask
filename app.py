@@ -17,7 +17,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Log the current working directory to check where the app is running from
 print(f"Current working directory: {os.getcwd()}")
 
-<<<<<<< HEAD
 # Convert Keras model to TFLite format
 def convert_model_to_tflite():
     # Load your existing model
@@ -33,8 +32,6 @@ def convert_model_to_tflite():
 
     print("✅ Model successfully converted to TFLite format!")
 
-=======
->>>>>>> f2707c0 (Your commit message for changes)
 # Load TFLite model
 MODEL_PATH = "model.tflite"
 print(f"Checking model file at: {MODEL_PATH}")  # Log model path
