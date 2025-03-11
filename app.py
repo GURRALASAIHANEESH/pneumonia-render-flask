@@ -21,10 +21,13 @@ MODEL_PATH = "model.tflite"
 # ✅ Step 1: Merge model parts if necessary
 def merge_model_parts():
     """Merges split model files into a single model.tflite"""
-    model_parts = sorted([f for f in os.listdir() if f.startswith("model.tflite.part")])
-    
+    model_parts = sorted(
+        [f for f in os.listdir() if f.startswith("model_part_")],
+        key=lambda x: int(x.split("_")[-1])
+    )
+
     if not model_parts:
-        print("❌ No model parts found! Ensure they are uploaded.")
+        print("❌ No model parts found! Ensure they are uploaded correctly.")
         return False
 
     print("🔄 Merging model parts...")
@@ -80,6 +83,9 @@ def get_result(file_path):
 
         # Load and preprocess image
         image = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+        if image is None:
+            return "❌ Error: Unable to read the image. Check the file format."
+        
         resized_img = cv2.resize(image, (128, 128))
         input_img = np.expand_dims(cv2.cvtColor(resized_img, cv2.COLOR_GRAY2RGB), axis=0).astype(np.float32)
 
