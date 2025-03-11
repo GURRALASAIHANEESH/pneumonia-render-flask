@@ -1,16 +1,21 @@
 import os
 
-# Define the parts and output file
-output_file = "model.tflite"
-part_files = [f"model_part_{i:02d}" for i in range(11)]  # Adjust if the number of parts is different
+def merge_model_parts():
+    model_parts = sorted([f for f in os.listdir() if f.startswith("model.tflite.part")])
+    
+    if not model_parts:
+        print("❌ No model parts found!")
+        return False
 
-# Check if the model already exists to avoid unnecessary merging
-if not os.path.exists(output_file):
-    with open(output_file, "wb") as outfile:
-        for part in part_files:
-            with open(part, "rb") as infile:
-                outfile.write(infile.read())
+    with open("model.tflite", "wb") as full_model:
+        for part in model_parts:
+            with open(part, "rb") as f:
+                full_model.write(f.read())
 
-    print("✅ Model reassembled successfully as 'model.tflite'!")
-else:
-    print("✅ Model already exists. No need to merge.")
+    print("✅ Model parts successfully merged into model.tflite")
+    return True
+
+if __name__ == "__main__":
+    success = merge_model_parts()
+    if not success:
+        print("⚠️ Model merging failed. Ensure model parts are uploaded.")
