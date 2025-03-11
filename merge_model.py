@@ -1,10 +1,10 @@
 import os
 
 def merge_model_parts():
-    model_parts = sorted([f for f in os.listdir() if f.startswith("model.tflite.part")])
+    model_parts = sorted([f for f in os.listdir() if f.startswith("model_part_")])
     
     if not model_parts:
-        print("❌ No model parts found!")
+        print("❌ No model parts found! Ensure they are uploaded.")
         return False
 
     with open("model.tflite", "wb") as full_model:
@@ -16,6 +16,7 @@ def merge_model_parts():
     return True
 
 if __name__ == "__main__":
-    success = merge_model_parts()
-    if not success:
-        print("⚠️ Model merging failed. Ensure model parts are uploaded.")
+    if merge_model_parts():
+        print("✅ Model merged successfully.")
+    else:
+        print("⚠️ Model merging failed. Ensure all model parts are uploaded to the repository.")
